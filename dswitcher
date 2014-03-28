@@ -3,8 +3,8 @@
 # Font
 font="Ubuntu-11"
 
-# Date format, for use as the prompt.
-date=$(date +"%a %d. %b %R")
+# Prompt
+prompt="search:"
 
 # dmenu cannot display more than 30 lines, to avoid screen clutter. Only relevant if you have more than 30 windows open.
 height=$(wmctrl -l | wc -l)
@@ -16,8 +16,7 @@ fi
 # Do not display these windows
 exclude="unity-.*$|XdndCollectionWindowImp$|Hud$|Desktop$"
 
-num=$(wmctrl -l | sed 's/  / /' | cut -d " " -f 4- | grep -Ev "$exclude" | nl -n ln | sed 's/     / - /' | cut -c 1-4,6- | dmenu -fn "$font" -b -i -p "$date" -l $heightfit | cut -c -1)
-echo $num >> /tmp/num
+num=$(wmctrl -l | sed 's/  / /' | cut -d " " -f 4- | grep -Ev "$exclude" | nl -n ln | sed 's/     / - /' | cut -c 1-4,6- | dmenu -fn "$font" -i -p "$prompt" -l $heightfit | cut -c -1)
 if [ -n "$num" ]
 then
     wmctrl -l | grep -Ev "$exclude" | sed -n "$num p" | cut -c -10 | xargs wmctrl -i -a
